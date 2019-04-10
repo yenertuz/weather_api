@@ -52,6 +52,8 @@
       let response_object = JSON.parse(this.responseText);
       console.log(response_object);
       state.location_key = response_object[0]["Key"];
+      state.city = response_object[0]["EnglishName"];
+      state.state = response_object[0]["AdministrativeArea"]["ID"];
       fetch_weather_information(state);
     }
     ajax_request.open("GET", url, true);
@@ -60,6 +62,7 @@
 
   function main() {
       let state = {};
+      window.state = state;
       state.api_key = "Ul1GdOP7L4e7JoZjPCEfGD6B3BwWFJKF";
       get_query_parameters(state);
       fetch_location_key(state);
