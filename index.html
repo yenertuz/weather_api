@@ -11,6 +11,11 @@
 	  <div id='root'></div>
   </body>
   <script>
+
+// personal api key = Ul1GdOP7L4e7JoZjPCEfGD6B3BwWFJKF
+
+// api key from movable = wJzJStEhgnn6wSVdxvK56XpvFE4sYeoC
+
   function get_query_parameters(state) {
     let url_params = new URLSearchParams(window.location.search);
     let zip_code = url_params.get("zip_code");
@@ -19,24 +24,43 @@
     state.date = date;
   }
 
+  function fetch_weather_information(state) {
+    let url = "http://dataservice.accuweather.com/forecasts/v1/daily/5day/";
+    url += state.location_key;
+    url += "?apikey=" + state.api_key;
+    let ajax_request = new XMLHttpRequest();
+    ajax_request.onreadystatechange = function() {
+      if (this.readyState != 4 || this.status != 200) {
+        return ;
+      }
+      let response_object = JSON.parse(this.responseText);
+      console.log(response_object);
+    }
+    ajax_request.open("GET", url, true);
+    ajax_request.send();
+  }
+
   function fetch_location_key(state) {
     let url = "http://dataservice.accuweather.com/locations/v1/postalcodes/us/search?";
     url += "q=" + encodeURIComponent(state.zip_code);
     url += "&apikey=" + encodeURIComponent(state.api_key);
     let ajax_request = new XMLHttpRequest();
-    ajax_request.open("GET", url, true);
-    ajax_request.onreadystatechange = () => {
-      console.log(this.responseText);
+    ajax_request.onreadystatechange = function() {
+      if (this.readyState != 4 || this.status != 200) {
+        return ;
+      }
       let response_object = JSON.parse(this.responseText);
-      state.location_key = response_object["Key"];
-      console.log(state.location_key);
+      console.log(response_object);
+      state.location_key = response_object[0]["Key"];
+      fetch_weather_information(state);
     }
+    ajax_request.open("GET", url, true);
     ajax_request.send();
   }
 
   function main() {
       let state = {};
-      state.api_key = "wJzJStEhgnn6wSVdxvK56XpvFE4sYeoC";
+      state.api_key = "Ul1GdOP7L4e7JoZjPCEfGD6B3BwWFJKF";
       get_query_parameters(state);
       fetch_location_key(state);
       return ;
