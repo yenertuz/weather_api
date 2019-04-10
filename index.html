@@ -9,22 +9,38 @@
   </head>
   <body>
 	  <div id='root'></div>
-	<hr>
-	  <footer style="text-align: center">
-			<img class="clickable" src="assets/logo_with_name.png" width="200px" height="40px"
-			onClick="location.assign('https://www.yenertuz.com')";/>
-			<br>Copyright &copy; Yener Tuz www.yenertuz.com 2019</footer>
   </body>
   <script>
+  function get_query_parameters(state) {
+    let url_params = new URLSearchParams(window.location.search);
+    let zip_code = url_params.get("zip_code");
+    let date = url_params.get("date");
+    state.zip_code = zip_code;
+    state.date = date;
+  }
+
+  function fetch_location_key(state) {
+    let url = "http://dataservice.accuweather.com/locations/v1/postalcodes/us/search?";
+    url += "q=" + encodeURIComponent(state.zip_code);
+    url += "&apikey=" + encodeURIComponent(state.api_key);
+    let ajax_request = new XMLHttpRequest();
+    ajax_request.open("GET", url, true);
+    ajax_request.onreadystatechange = () => {
+      console.log(this.responseText);
+      let response_object = JSON.parse(this.responseText);
+      state.location_key = response_object["Key"];
+      console.log(state.location_key);
+    }
+    ajax_request.send();
+  }
+
   function main() {
       let state = {};
+      state.api_key = "wJzJStEhgnn6wSVdxvK56XpvFE4sYeoC";
       get_query_parameters(state);
-      if (check_query_parameters(state) == 0) {
-          handle_error(state);
-          return ;
-      }
-      get_location_key(state);
-      get_weather_information(state);
+      fetch_location_key(state);
+      return ;
+      fetch_weather_information(state);
       render_weather_information(state);
   }
   
