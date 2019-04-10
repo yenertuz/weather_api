@@ -17,9 +17,18 @@
   </body>
   <script>
   function main() {
-      
+      let state = {};
+      get_query_parameters(state);
+      if (check_query_parameters(state) == 0) {
+          handle_error(state);
+          return ;
+      }
+      get_location_key(state);
+      get_weather_information(state);
+      render_weather_information(state);
   }
   
+  main();
   
   </script> 
 </html>
