@@ -16,6 +16,39 @@
 
 // api key from movable = wJzJStEhgnn6wSVdxvK56XpvFE4sYeoC
 
+  function display_state(state) {
+    document.getElementById("root").innerHTML = JSON.stringify(state.days);
+  }
+
+  function get_index_for_relevant_days(state) {
+    state.index = -1;
+    state.days_response["DailyForecasts"].forEach(
+      (element, index) => {
+        let date_string = element["Date"].substring(0, 10);
+        if (date_string == state.today_date) {
+          state.index = index;
+        }
+      }
+    );
+  }
+
+  function fetch_days(state) {
+    state.days = state.days_response["DailyForecasts"].slice(state.index, state.index + 3);
+  }
+
+  function get_relevant_days(state) {
+    let today_date_object = new Date(state.date);
+    let today_date_string = today_date_object.toISOString();
+    today_date_string = today_date_string.substring(0, 10);
+    state.today_date = today_date_string;
+    console.log(today_date_string);
+    get_index_for_relevant_days(state);
+    if (state.index == -1) {
+      return ;
+    }
+    fetch_days(state);
+  }
+
   function get_query_parameters(state) {
     let url_params = new URLSearchParams(window.location.search);
     let zip_code = url_params.get("zip_code");
@@ -34,7 +67,9 @@
         return ;
       }
       let response_object = JSON.parse(this.responseText);
-      console.log(response_object);
+      state.days_response = response_object;
+      get_relevant_days(state);
+      display_state(state);
     }
     ajax_request.open("GET", url, true);
     ajax_request.send();
@@ -50,10 +85,10 @@
         return ;
       }
       let response_object = JSON.parse(this.responseText);
-      console.log(response_object);
       state.location_key = response_object[0]["Key"];
       state.city = response_object[0]["EnglishName"];
       state.state = response_object[0]["AdministrativeArea"]["ID"];
+      state.key_response = response_object;
       fetch_weather_information(state);
     }
     ajax_request.open("GET", url, true);
