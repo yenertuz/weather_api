@@ -14,11 +14,11 @@
   .day-name {
     background-color: darkcyan;
     color: white;
-    padding-left: 5px;
+    padding-left: 15px;
     padding-top: 3px;
     padding-bottom: 3px;
+    margin-bottom: 5px;
     font-weight: bold;
-
   }
 
   header#title * {
@@ -32,6 +32,26 @@
     font-size: 25px;
     color: rgb(132,133,136);
     margin-bottom: 10px;
+  }
+
+  .inner-container {
+    display:grid;
+    grid-template-columns: 40% 60%;
+  }
+
+  .inner-container img {
+    grid-column-start: 1;
+    grid-column-end: span 1;
+  }
+
+  .inner-container .text {
+    grid-column-start: 2;
+    grid-column-end: span 1;
+  }
+
+  .inner-container img {
+    height: 100%;
+    width: 100%;
   }
 
   main {
@@ -53,8 +73,8 @@
 <header id="title">
 WEATHER FORECAST FOR
 <div id="location">
-<div id="city">WASHINGTON</div>, 
-<div id="state">DC</div>
+<div id="city">SAN JOSE</div>, 
+<div id="state">CA</div>
 </div>
 </header>
 
@@ -64,36 +84,44 @@ WEATHER FORECAST FOR
 
 <section id="day-1-section">
 <div class="day-name" id="day-1-day-name">Today:</div>
+<div class="inner-container">
 <img id="day-1-img" class="day-img" src="https://developer.accuweather.com/sites/default/files/01-s.png">
+<div class="text">
 <div id="day-1-summary" class="summary">Clear</div>
 <div id="day-1-temperatures" class="temperatures">
 <div id="day-1-high" class="high">90</div> /
 <div id="day-1-low" class="low">70</div>
 F
 </div>
+</div>
+</div>
 </section>
 
       <!-- DAY 2 -->
 <section id="day-2-section">
 <div class="day-name" id="day-2-day-name">Today:</div>
+<div class="inner-container">
 <img id="day-2-img" class="day-img" src="https://developer.accuweather.com/sites/default/files/01-s.png">
+<div class="text">
 <div id="day-2-summary" class="summary">Clear</div>
 <div id="day-2-temperatures" class="temperatures">
 <div id="day-2-high" class="high">90</div> /
 <div id="day-2-low" class="low">70</div>
 F
-</div>
+</div></div></div>
 </section>
       <!-- DAY 3 -->
 <section id="day-3-section">
 <div class="day-name" id="day-3-day-name">Today:</div>
+<div class="inner-container">
 <img id="day-3-img" class="day-img" src="https://developer.accuweather.com/sites/default/files/01-s.png">
+<div class="text">
 <div id="day-3-summary" class="summary">Clear</div>
 <div id="day-3-temperatures" class="temperatures">
 <div id="day-3-high" class="high">90</div> /
 <div id="day-3-low" class="low">70</div>
 F
-</div>
+</div></div></div>
 </section>
 
 </main>
