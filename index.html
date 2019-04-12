@@ -298,7 +298,7 @@ F
   }
 
   function fetch_weather_information(state) {
-    let url = "http://dataservice.accuweather.com/forecasts/v1/daily/5day/";
+    let url = "https://dataservice.accuweather.com/forecasts/v1/daily/5day/";
     url += state.location_key;
     url += "?apikey=" + state.api_key;
     let ajax_request = new XMLHttpRequest();
@@ -316,7 +316,7 @@ F
   }
 
   function fetch_location_key(state) {
-    let url = "http://dataservice.accuweather.com/locations/v1/postalcodes/us/search?";
+    let url = "https://dataservice.accuweather.com/locations/v1/postalcodes/us/search?";
     url += "q=" + encodeURIComponent(state.zip_code);
     url += "&apikey=" + encodeURIComponent(state.api_key);
     let ajax_request = new XMLHttpRequest();
