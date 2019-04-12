@@ -5,7 +5,31 @@
 	<meta name="description" content="A weather API that uses the AccuWeather REST API. Use this website to check the weather for your favorite places.">
 	<meta name="author" content="Yener Tuz">
 	<link rel="icon" href="https://img.icons8.com/dusk/64/000000/app-symbol.png" type="image/gif" sizes="16x16">
-	<title>Weather API assignment - Yener Tuz</title>
+  <title>Weather API assignment - Yener Tuz</title>
+  <style>
+  body {
+    font-family: Helvetica;
+  }
+
+  header#title * {
+    display: inline-block;
+  }
+
+  header#title {
+    display:block;
+    width: 100%;
+    text-align: center;
+  }
+
+  main {
+    display: flex;
+  }
+
+  main section {
+    width: 200px;
+  }
+
+  </style>
   </head>
   <body>
 	  <div id='root'>
@@ -13,18 +37,20 @@
       <!-- HEADER -->
       
 <header id="title">
-Weather Forecast for
+WEATHER FORECAST FOR
 <div id="location">
-<div id="city">Washington</div>, 
+<div id="city">WASHINGTON</div>, 
 <div id="state">DC</div>
 </div>
 </header>
 
+
+<main>
       <!-- DAY 1 -->
 
 <section id="day-1-section">
 <div class="day-name" id="day-1-day-name">Today:</div>
-<img id="day-1-img" class="day-img" src="">
+<img id="day-1-img" class="day-img" src="https://developer.accuweather.com/sites/default/files/01-s.png">
 <div id="day-1-summary" class="summary">Clear</div>
 <div id="day-1-temperatures" class="temperatures">
 <div id="day-1-high" class="high">90</div> /
@@ -36,7 +62,7 @@ F
       <!-- DAY 2 -->
 <section id="day-2-section">
 <div class="day-name" id="day-2-day-name">Today:</div>
-<img id="day-2-img" class="day-img" src="">
+<img id="day-2-img" class="day-img" src="https://developer.accuweather.com/sites/default/files/01-s.png">
 <div id="day-2-summary" class="summary">Clear</div>
 <div id="day-2-temperatures" class="temperatures">
 <div id="day-2-high" class="high">90</div> /
@@ -47,7 +73,7 @@ F
       <!-- DAY 3 -->
 <section id="day-3-section">
 <div class="day-name" id="day-3-day-name">Today:</div>
-<img id="day-3-img" class="day-img" src="">
+<img id="day-3-img" class="day-img" src="https://developer.accuweather.com/sites/default/files/01-s.png">
 <div id="day-3-summary" class="summary">Clear</div>
 <div id="day-3-temperatures" class="temperatures">
 <div id="day-3-high" class="high">90</div> /
@@ -55,6 +81,8 @@ F
 F
 </div>
 </section>
+
+</main>
 
     </div>
   </body>
