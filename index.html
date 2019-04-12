@@ -4,15 +4,15 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="A weather API that uses the AccuWeather REST API. Use this website to check the weather for your favorite places.">
 	<meta name="author" content="Yener Tuz">
-	<link rel="icon" href="https://img.icons8.com/dusk/64/000000/app-symbol.png" type="image/gif" sizes="16x16">
-  <title>Weather API assignment - Yener Tuz</title>
+	<link id="favicon" rel="icon" href="https://images.emojiterra.com/google/android-oreo/512px/26a0.png" type="image/gif" sizes="16x16">
+  <title>Could not complete request. Please check docs to debug.</title>
   <style>
   body {
     font-family: Helvetica;
   }
 
   .day-name {
-    background-color: darkcyan;
+    background-color: rgb(109, 156, 187);
     color: white;
     padding-left: 15px;
     padding-top: 3px;
@@ -50,8 +50,30 @@
   }
 
   .inner-container img {
-    height: 100%;
     width: 100%;
+  }
+
+  .temperatures * {
+    display: inline-block;
+  }
+
+  div.text {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+  }
+
+  .summary {
+    grid-row-start: 2;
+    grid-row-end: span 1;
+  }
+
+  .temperatures {
+    grid-row-start: 4;
+    grid-row-end: span 1;
+  }
+
+  .high {
+    font-weight: bold;
   }
 
   main {
@@ -66,7 +88,7 @@
   </style>
   </head>
   <body>
-	  <div id='root'>
+	  <div id='root' style="display: none">
       
       <!-- HEADER -->
       
@@ -89,8 +111,8 @@ WEATHER FORECAST FOR
 <div class="text">
 <div id="day-1-summary" class="summary">Clear</div>
 <div id="day-1-temperatures" class="temperatures">
-<div id="day-1-high" class="high">90</div> /
-<div id="day-1-low" class="low">70</div>
+<div id="day-1-high" class="high">90&deg;</div> /
+<div id="day-1-low" class="low">70&deg;</div>
 F
 </div>
 </div>
@@ -105,8 +127,8 @@ F
 <div class="text">
 <div id="day-2-summary" class="summary">Clear</div>
 <div id="day-2-temperatures" class="temperatures">
-<div id="day-2-high" class="high">90</div> /
-<div id="day-2-low" class="low">70</div>
+<div id="day-2-high" class="high">90&deg;</div> /
+<div id="day-2-low" class="low">70&deg;</div>
 F
 </div></div></div>
 </section>
@@ -118,8 +140,8 @@ F
 <div class="text">
 <div id="day-3-summary" class="summary">Clear</div>
 <div id="day-3-temperatures" class="temperatures">
-<div id="day-3-high" class="high">90</div> /
-<div id="day-3-low" class="low">70</div>
+<div id="day-3-high" class="high">90&deg;</div> /
+<div id="day-3-low" class="low">70&deg;</div>
 F
 </div></div></div>
 </section>
@@ -134,8 +156,113 @@ F
 
 // api key from movable = wJzJStEhgnn6wSVdxvK56XpvFE4sYeoC
 
-  function display_state(state) {
-    document.getElementById("root").innerHTML = JSON.stringify(state.days);
+  function is_same_day(date1, date2) {
+    if (date1.getFullYear() == date2.getFullYear() && 
+    date1.getMonth() == date2.getMonth() && 
+    date1.getDay() == date2.getDay()) {
+      return true;
+    }
+    return false;
+  }
+
+  function render_day_name(element, index) {
+    index += 1;
+    let dom_element = document.getElementById("day-" + index + "-day-name");
+    let date_object = new Date(element["Date"]);
+    let today_date_object = new Date();
+    let weekday = new Array(7);
+    weekday[0] =  "Sunday";
+    weekday[1] = "Monday";
+    weekday[2] = "Tuesday";
+    weekday[3] = "Wednesday";
+    weekday[4] = "Thursday";
+    weekday[5] = "Friday";
+    weekday[6] = "Saturday";
+    let day_name = weekday[date_object.getDay()];
+    if ( is_same_day(today_date_object, date_object) ) {
+      day_name = "Today";
+    }
+    day_name += ":";
+    dom_element.innerHTML = day_name;
+  }
+
+  function render_high(element, index) {
+    let high = element["Temperature"]["Maximum"]["Value"];
+    index += 1;
+    let id = "day-" + index + "-high";
+    let dom_element = document.getElementById(id);
+    dom_element.innerHTML = high.toString() + "&deg;";
+  }
+
+  function render_low(element, index) {
+    let low = element["Temperature"]["Minimum"]["Value"];
+    index += 1;
+    let id = "day-" + index + "-low";
+    let dom_element = document.getElementById(id);
+    dom_element.innerHTML = low.toString() + "&deg;";
+  }
+
+  function render_image(element, index) {
+    let icon_number = element["Day"]["Icon"];
+    if (icon_number < 10) {
+      icon_number = "0" + icon_number;
+    } else {
+      icon_number = icon_number.toString();
+    }
+    index += 1;
+    let id = "day-" + index + "-img";
+    let image_source = "https://developer.accuweather.com/sites/default/files/" + icon_number + "-s.png";
+    let dom_element = document.getElementById(id).src = image_source;
+    if (index == 1) {
+      document.getElementById("favicon").href = image_source;
+    }
+  }
+
+  function render_summary(element, index) {
+    index += 1;
+    let id = "day-" + index + "-summary";
+    let dom_element = document.getElementById(id);
+    dom_element.innerHTML = element["Day"]["IconPhrase"];
+  }
+
+  function process_single_day(element, index) {
+    render_day_name(element, index);
+    render_high(element, index);
+    render_low(element, index);
+    render_summary(element, index);
+    render_image(element, index);
+  }
+
+  function render_city(state) {
+    document.getElementById("city").innerHTML = state.city.toUpperCase();
+  }
+
+  function render_state(state) {
+    document.getElementById("state").innerHTML = state.state.toUpperCase();
+  }
+
+  function render_title(state) {
+    document.title = "Weather Information for " + state.city + ", " + state.state;
+  }
+
+  function render_favicon(state) {
+    ;
+  }
+
+  function render_results(state) {
+    if (state.days.length != 3 || state.days == undefined) {
+      return ;
+    }
+    render_city(state);
+    render_state(state);
+    render_title(state);
+    render_favicon(state);
+    state.days.forEach(
+      (element, index) => {
+        process_single_day(element, index);
+      }
+    );
+    document.getElementById("root").style.display = "initial";
   }
 
   function get_index_for_relevant_days(state) {
@@ -159,7 +286,6 @@ F
     let today_date_string = today_date_object.toISOString();
     today_date_string = today_date_string.substring(0, 10);
     state.today_date = today_date_string;
-    console.log(today_date_string);
     get_index_for_relevant_days(state);
     if (state.index == -1) {
       return ;
@@ -187,7 +313,7 @@ F
       let response_object = JSON.parse(this.responseText);
       state.days_response = response_object;
       get_relevant_days(state);
-      display_state(state);
+      render_results(state);
     }
     ajax_request.open("GET", url, true);
     ajax_request.send();
@@ -220,11 +346,9 @@ F
       get_query_parameters(state);
       fetch_location_key(state);
       return ;
-      fetch_weather_information(state);
-      render_weather_information(state);
   }
   
-  // main();
+  main();
   
   </script> 
 </html>
